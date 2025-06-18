@@ -1,0 +1,7 @@
+POST /posts
+
+{
+  "title": "My First Post",
+  "content": "This is the body of the post.",
+  "author": "68529809394073aab183c90d" // <- this must be a valid User _id from DB
+}
