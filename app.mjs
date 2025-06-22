@@ -29,10 +29,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
 
-// Test route
-app.get("/", (req, res) => {
-  res.send("🔥 Server is running");
-});
+
 
 // Start server
 app.listen(PORT, () => {
