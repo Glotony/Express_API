@@ -1,20 +1,25 @@
 import express from "express"
-import { 
-  createUser, 
-  getUsers, 
-  getUserById, 
-  updateUser, 
+import {
+  createUser,
+  getUsers,
+  getUserById,
+  updateUser,
   deleteUser,
-  changeUserRole 
+  changeUserRole,
+  loginUser
 } from "../controllers/userController.mjs"
-
+import { isAdmin } from "../middlewares/isAdmin.mjs"
 const userRouter = express.Router()
+
+// LOGIN user
+userRouter.post('/login', loginUser);
+
 
 // CREATE user
 userRouter.post("/", createUser)
 
 // READ all users
-userRouter.get("/", getUsers)
+userRouter.get("/", isAdmin, getUsers)
 
 // READ user by id
 userRouter.get("/:id", getUserById)

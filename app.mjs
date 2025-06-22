@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from 'cookie-parser';
+
 
 // Routes
 import userRoutes from './routes/userRoutes.mjs';
@@ -24,7 +26,7 @@ mongoose.connect(MONGO_URI, {
 // Middleware
 app.use(cors());
 app.use(express.json());
-
+app.use(cookieParser());
 // Routes
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
