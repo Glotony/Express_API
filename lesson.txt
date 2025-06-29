@@ -1,1 +1,6 @@
 middleware - isModder (უნდა შეამოწმოს მოდერია ან ადმინი)
+
+
+
+
+postRouter გაასწორე და მიაბი postController ს და გატესტე ყველა route

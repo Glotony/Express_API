@@ -1,23 +1,23 @@
 import express from "express";
 import {
-  createUser,
-  getUsers,
-  getUserById,
-  updateUser,
-  deleteUser,
-  changeUserRole,
-  loginUser
-} from "../controllers/userController.mjs";
+  createPost,
+  getPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+} from "../controllers/postsController.mjs";
+
 import { isAdmin } from "../middlewares/isAdmin.mjs";
 
-const userRouter = express.Router();
+const postRouter = express.Router();
 
-userRouter.post('/login', loginUser);
-userRouter.post("/", createUser);
-userRouter.get("/", isAdmin, getUsers);
-userRouter.get("/:id", getUserById);
-userRouter.put("/:id", updateUser);
-userRouter.delete("/:id", deleteUser);
-userRouter.put("/:id/role", changeUserRole);
+postRouter.post("/", createUser);
 
-export default userRouter;
+// postRouter.post("/reset/password", changePassword);
+
+postRouter.get("/",  getUsers);
+postRouter.get("/:id",  getUserById);
+postRouter.put("/:id",  updateUser);
+postRouter.delete("/:id",  deleteUser);
+
+export default postRouter;
