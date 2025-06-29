@@ -1,4 +1,4 @@
-import Post from '../models/postsModel.mjs';
+import Post from '../models/postModel.mjs';
 import User from '../models/userModel.mjs';
 
 // CREATE
@@ -21,7 +21,7 @@ export const createPost = async (req, res) => {
 // READ ALL
 export const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('author', 'username email');
+    const posts = await Post.find().populate('author', 'name email');
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -31,7 +31,7 @@ export const getAllPosts = async (req, res) => {
 // READ ONE
 export const getPostById = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate('author', 'username email');
+    const post = await Post.findById(req.params.id).populate('author', 'name email');
     if (!post) return res.status(404).json({ error: 'Post not found' });
     res.status(200).json(post);
   } catch (err) {

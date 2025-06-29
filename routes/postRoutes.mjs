@@ -1,18 +1,23 @@
-import express from 'express';
+import express from "express";
 import {
-  createPost,
-  getAllPosts,
-  getPostById,
-  updatePost,
-  deletePost
-} from '../controllers/postsController.mjs';
+  createUser,
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  changeUserRole,
+  loginUser
+} from "../controllers/userController.mjs";
+import { isAdmin } from "../middlewares/isAdmin.mjs";
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post('/', createPost);         // create post
-router.get('/', getAllPosts);         // get all posts
-router.get('/:id', getPostById);      // get post by id
-router.put('/:id', updatePost);       // update post
-router.delete('/:id', deletePost);    // delete post
+userRouter.post('/login', loginUser);
+userRouter.post("/", createUser);
+userRouter.get("/", isAdmin, getUsers);
+userRouter.get("/:id", getUserById);
+userRouter.put("/:id", updateUser);
+userRouter.delete("/:id", deleteUser);
+userRouter.put("/:id/role", changeUserRole);
 
-export default router;
+export default userRouter;
