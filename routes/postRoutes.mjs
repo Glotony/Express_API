@@ -1,23 +1,30 @@
 import express from "express";
 import {
   createPost,
-  getPosts,
+  getAllPosts,
   getPostById,
   updatePost,
   deletePost,
 } from "../controllers/postsController.mjs";
 
-import { isAdmin } from "../middlewares/isAdmin.mjs";
+import { authCheck ,ownerOrAdmin} from "../middlewares/roleCheck.mjs";
 
 const postRouter = express.Router();
 
-postRouter.post("/", createUser);
+// Create a new post
+postRouter.post("/", authCheck, createPost);
 
-// postRouter.post("/reset/password", changePassword);
+// Get all posts
+postRouter.get("/", getAllPosts);
 
-postRouter.get("/",  getUsers);
-postRouter.get("/:id",  getUserById);
-postRouter.put("/:id",  updateUser);
-postRouter.delete("/:id",  deleteUser);
+// Get a single post by ID
+postRouter.get("/:id", getPostById);
+
+
+// Update a post by ID
+postRouter.put("/:id", ownerOrAdmin, updatePost);
+
+// Delete a post by ID
+postRouter.delete("/:id", ownerOrAdmin, deletePost);
 
 export default postRouter;

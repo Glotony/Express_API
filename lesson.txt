@@ -1,6 +1,7 @@
-middleware - isModder (უნდა შეამოწმოს მოდერია ან ადმინი)
+request limiter 
 
+origin check middleware with .env config of allowed origins
 
+on role change, update login user token 
 
-
-postRouter გაასწორე და მიაბი postController ს და გატესტე ყველა route
+ip limiter (use caching)

@@ -2,8 +2,8 @@ import User from '../models/userModel.mjs'; // adjust path if needed
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import { JWT_SECRET } from '../utils/config.mjs';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // LOGIN user
 export const loginUser = async (req, res) => {
@@ -77,8 +77,24 @@ export const createUser = async (req, res) => {
 // READ all users
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find().select('-password'); // omit passwords
-    res.status(200).json(users);
+    const page = parseInt(req.query.page) || 1;     // default to page 1
+    const limit = parseInt(req.query.limit) || 10;  // default to 10 users per page
+    const skip = (page - 1) * limit;
+
+    const total = await User.countDocuments();
+    const users = await User.find()
+      .skip(skip)
+      .limit(limit)
+      .select('-password') // exclude password
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+      count: users.length,
+      users
+    });
   } catch (error) {
     console.error('Get users error:', error);
     res.status(500).json({ message: 'Internal server error.' });
