@@ -1,7 +1,3 @@
-request limiter  ---- done
-
-origin check middleware with .env config of allowed origins - done
 
 on role change, update login user token 
 
-ip limiter (use caching)
