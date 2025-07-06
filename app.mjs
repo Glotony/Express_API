@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import originCheck from "./utils/originCheck.mjs"
+import rateLimit from "./utils/ratelimiter.mjs"
 // Import route handlers
 import userRoutes from "./routes/userRoutes.mjs";
 import postRoutes from "./routes/postRoutes.mjs";
@@ -20,28 +21,14 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Origin check middleware (from your request)
-// Allowed origins loaded from .env, comma-separated
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",").map(origin => origin.trim())
-  : [];
-
-const originCheck = (req, res, next) => {
-  const origin = req.headers.origin;
-  if (!origin || allowedOrigins.length === 0) {
-    // No origin or no restrictions, allow all
-    return next();
-  }
-  if (allowedOrigins.includes(origin)) {
-    return next();
-  }
-  return res.status(403).json({ message: "Origin not allowed" });
-};
 
 // Middleware setup
+
 app.use(originCheck); // origin check before cors
+app.use(rateLimit); // origin check before cors
+
 app.use(cors({
-  origin: allowedOrigins.length > 0 ? allowedOrigins : true,
+  origin: true,
   credentials: true,
 }));
 
