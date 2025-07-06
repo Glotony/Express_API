@@ -169,3 +169,27 @@ export const changeUserRole = async (req, res) => {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
+
+export async function authCheck(req, res, next) {
+  const token = req.cookies.token;
+
+  if (!token) return res.status(401).json({ message: "Unauthorized: No token provided" });
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const user = await User.findById(decoded.id);
+
+    if (!user) return res.status(401).json({ message: "Unauthorized: User not found" });
+
+    if (decoded.tokenVersion !== user.tokenVersion) {
+      return res.status(401).json({ message: "Unauthorized: Token expired, please login again." });
+    }
+
+    req.user = decoded;
+    next();
+
+  } catch (err) {
+    return res.status(401).json({ message: "Unauthorized: Invalid or expired token" });
+  }
+}
